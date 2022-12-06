@@ -19,7 +19,7 @@ app.use(
   }),
 );
 app.use(bodyParser.json({ limit: '50mb' }));
-app.use('/api', (req, res) => {
+app.use('/', (req, res) => {
   res.send({ message: 'welcome to my server' });
 });
 
