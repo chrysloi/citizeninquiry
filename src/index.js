@@ -14,9 +14,6 @@ app.get('/api', (req, res) => {
   res.send({ message: 'welcome to my server' });
 });
 app.use('/api', router);
-app.use('/**', (req, res) => {
-  res.json({ error: { status: 404, message: 'Router not found' } });
-});
 app.use(
   '/api-docs',
   swaggerUI.serve,
@@ -27,4 +24,7 @@ app.use(
     },
   }),
 );
+app.use('/**', (req, res) => {
+  res.json({ error: { status: 404, message: 'Router not found' } });
+});
 module.exports = app;
