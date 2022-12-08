@@ -6,4 +6,4 @@ const { port } = currentConfig;
 const server = app.listen(port, () => {
   console.info('you server is running well 🌎🔥🔥🔥', port);
 });
-export default server;
+module.exports = server;
