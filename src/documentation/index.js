@@ -1,4 +1,4 @@
-import welcome from './welcome';
+const welcome = require('./welcome');
 // import { user, userDefinition } from "./auth";
 // import { category, categoryDefinition } from "./category";
 const paths = {
@@ -48,4 +48,4 @@ const config = {
   paths,
   definitions,
 };
-export default config;
+module.exports = config;

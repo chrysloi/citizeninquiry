@@ -1,9 +1,9 @@
-import express from 'express';
-import morgan from 'morgan';
-import swaggerUI from 'swagger-ui-express';
-import swaggerDocument from './documentation';
-import router from './routes';
-import cors from 'cors';
+const express = require('express');
+const morgan = require('morgan');
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./documentation');
+const router = require('./routes');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
@@ -27,4 +27,4 @@ app.use(
     },
   }),
 );
-export default app;
+module.exports = app;
