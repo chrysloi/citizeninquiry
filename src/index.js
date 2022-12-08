@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from './documentation';
-// import router from "./routes";
+import router from './routes';
 import cors from 'cors';
 
 const app = express();
@@ -13,7 +13,10 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/api', (req, res) => {
   res.send({ message: 'welcome to my server' });
 });
-// app.use("/api", router);
+app.use('/api', router);
+app.use('/**', (req, res) => {
+  res.json({ error: { status: 404, message: 'Router not found' } });
+});
 app.use(
   '/api-docs',
   swaggerUI.serve,
