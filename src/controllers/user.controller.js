@@ -1,6 +1,6 @@
-import User from '../models/user.model';
+// import User from '../models/user.model';
 const { INTERNAL_SERVER_ERROR } = require('http-status');
-// const User = require('../models/user.model');
+const User = require('../models/user.model');
 
 class users {
   static async createUser(req, res) {
