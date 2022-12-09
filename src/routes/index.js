@@ -1,9 +1,7 @@
 const express = require('express');
-
+const protectedRoutes = require('./protected');
 const router = express.Router();
 
-router.all('/*', (req, res) => {
-  res.json({ error: { status: 404, message: 'Router not found' } });
-});
+router.use('/protected', protectedRoutes);
 
 module.exports = router;

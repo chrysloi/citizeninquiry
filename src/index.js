@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
-app.get('/api', (req, res) => {
+app.get('/welcome', (req, res) => {
   res.send({ message: 'welcome to my server' });
 });
 app.use('/api', router);
