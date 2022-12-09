@@ -1,14 +1,9 @@
 const welcome = require('./welcome');
-// import { user, userDefinition } from "./auth";
-// import { category, categoryDefinition } from "./category";
+const user = require('./user');
+
 const paths = {
   ...welcome,
-  //   ...user,
-};
-
-const definitions = {
-  //   ...userDefinition,
-  //   ...categoryDefinition,
+  ...user,
 };
 
 const config = {
@@ -46,6 +41,5 @@ const config = {
   ],
 
   paths,
-  definitions,
 };
 module.exports = config;

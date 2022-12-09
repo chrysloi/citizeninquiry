@@ -3,7 +3,8 @@ const { Router } = require('express');
 
 const router = Router();
 
-router.get('/users', userRoutes.getUsers);
-router.post('/signup', userRoutes.createUser);
+router.get('/', userRoutes.getUsers);
+router.post('/login', userRoutes.loginUser);
+router.post('/createuser', userRoutes.createUser);
 
 module.exports = router;
