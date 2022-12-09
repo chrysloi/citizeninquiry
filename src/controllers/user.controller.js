@@ -1,4 +1,3 @@
-// import User from '../models/user.model';
 const { INTERNAL_SERVER_ERROR } = require('http-status');
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
@@ -31,7 +30,11 @@ class users {
         hash = await bcrypt.hash(password, salt);
       }
 
-      const user = await User.create({ password, email, name });
+      const user = await User.create({
+        password: hash,
+        email,
+        name,
+      });
       const token = jwt.sign(
         { id: user._id, user },
         process.env.JWT_SECRET,
@@ -41,7 +44,7 @@ class users {
       );
       return res.status(201).json({
         message: 'User created',
-        data: token,
+        data: { token, user },
       });
     } catch (error) {
       console.log(error);
@@ -86,7 +89,7 @@ class users {
           error: 'Please provide all required fields',
         });
       }
-      const user = await User.findOne({ $where: { email } });
+      const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({
           status: 404,
@@ -100,17 +103,68 @@ class users {
           error: 'Invalid credentials',
         });
       }
-      const token = jwt.sign(
-        { id: user._id },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '1d',
-        },
-      );
+      const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+        expiresIn: '1d',
+      });
       return res.status(200).json({
         message: 'User logged in successfully',
         data: { token, user },
       });
+    } catch (error) {
+      return res.status(500).json({
+        status: INTERNAL_SERVER_ERROR,
+        error: error,
+      });
+    }
+  }
+
+  static async updateUser(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findByIdAndUpdate(userId, req.body, {
+        new: true,
+      });
+      return res.status(200).json({
+        status: 200,
+        data: user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: INTERNAL_SERVER_ERROR,
+        error: error,
+      });
+    }
+  }
+
+  static async getUserInfo(req, res) {
+    try {
+      const { userId } = req.params;
+      const user = await User.findById(userId).select('-password');
+      return res.status(200).json({
+        status: 200,
+        data: user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        status: INTERNAL_SERVER_ERROR,
+        error: error,
+      });
+    }
+  }
+
+  static async logoutUser(req, res) {
+    try {
+      let token = req.headers.authorization.split(' ')[1];
+      const user = jwt.verify(token, process.env.JWT_SECRET);
+      const randomNumberToAppend = toString(
+        Math.floor(Math.random() * 1000 + 1),
+      );
+      const hashedRandomNumberToAppend = await bcrypt.hash(
+        randomNumberToAppend,
+        10,
+      );
+      token = token + hashedRandomNumberToAppend;
+      res.status(200).json({ message: 'Logout successfully' });
     } catch (error) {
       return res.status(500).json({
         status: INTERNAL_SERVER_ERROR,

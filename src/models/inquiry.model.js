@@ -26,11 +26,6 @@ const inquirySchema = new mongoose.Schema(
       ref: 'Village',
       required: true,
     },
-    cell: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cell',
-      required: true,
-    },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
@@ -39,7 +34,7 @@ const inquirySchema = new mongoose.Schema(
     comments: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment',
-      required: true,
+      required: false,
     },
   },
   {
