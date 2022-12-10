@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    village: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Village',
+      required: true,
+    },
   },
   {
     timestamps: true,

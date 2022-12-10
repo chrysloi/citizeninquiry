@@ -25,7 +25,7 @@ class villages {
 
   static async getVillages(req, res) {
     try {
-      const { villageId } = req.query;
+      const { villageId, cellId } = req.query;
       if (villageId) {
         const village = await Village.findById(villageId).populate(
           'cell',
@@ -33,6 +33,13 @@ class villages {
         return res.status(OK).json({
           message: 'Village found',
           data: village,
+        });
+      }
+      if (cellId) {
+        const villages = await Village.find({ cell: cellId });
+        return res.status(OK).json({
+          message: `Villages in this cell found`,
+          data: villages,
         });
       }
       const villages = await Village.find().populate('cell');

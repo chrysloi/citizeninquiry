@@ -38,7 +38,7 @@ class inquiries {
         });
       }
       if (userId) {
-        const inquiry = await Inquiry.findOne({
+        const inquiry = await Inquiry.find({
           user: userId,
         }).populate('user');
         return res.status(OK).json({
@@ -47,17 +47,17 @@ class inquiries {
         });
       }
       if (cellId) {
-        const inquiry = await Inquiry.findOne({
+        const inquiry = await Inquiry.find({
           cell: cellId,
         }).populate('user');
       }
       if (villageId) {
-        const inquiry = await Inquiry.findOne({
+        const inquiry = await Inquiry.find({
           village: villageId,
         }).populate('user');
       }
       if (categoryId) {
-        const inquiry = await Inquiry.findOne({
+        const inquiry = await Inquiry.find({
           category: categoryId,
         }).populate('user');
       }
