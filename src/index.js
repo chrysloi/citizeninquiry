@@ -6,6 +6,7 @@ const router = require('./routes');
 const cors = require('cors');
 
 const app = express();
+app.use(express.static(__dirname + 'public'));
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));

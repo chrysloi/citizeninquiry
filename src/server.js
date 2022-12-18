@@ -1,6 +1,3 @@
-// import app from './index';
-// import config from './config/config';
-// import log from './logger';
 const app = require('./index');
 const config = require('./config/config');
 const mongoose = require('mongoose');
