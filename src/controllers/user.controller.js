@@ -6,21 +6,36 @@ const jwt = require('jsonwebtoken');
 class users {
   static async createUser(req, res) {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, phone, village, cell } =
+        req.body;
       let salt, hash;
 
-      console.log(req.body);
-      if (!name || !password || !email) {
+      if (
+        !name ||
+        !password ||
+        !email ||
+        !phone ||
+        !village ||
+        !cell
+      ) {
         return res.status(400).json({
           status: 400,
           error: 'Please provide all required fields',
         });
       }
 
-      const userExists = await User.findOne({
-        email: req.body.email,
+      const userWithPhoneExists = await User.findOne({
+        phone,
       });
-      if (userExists) {
+      const userWithEmailExists = await User.findOne({
+        email,
+      });
+      if (userWithPhoneExists) {
+        return res.status(409).json({
+          status: 409,
+          error: 'User already exists',
+        });
+      } else if (userWithEmailExists) {
         return res.status(409).json({
           status: 409,
           error: 'User already exists',
@@ -34,6 +49,9 @@ class users {
         password: hash,
         email,
         name,
+        phone,
+        cell,
+        village,
       });
       const token = jwt.sign(
         { id: user._id, user },
@@ -82,14 +100,14 @@ class users {
 
   static async loginUser(req, res) {
     try {
-      const { email, password } = req.body;
-      if (!email || !password) {
+      const { phone, password } = req.body;
+      if (!phone || !password) {
         return res.status(400).json({
           status: 400,
           error: 'Please provide all required fields',
         });
       }
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ phone });
       if (!user) {
         return res.status(404).json({
           status: 404,

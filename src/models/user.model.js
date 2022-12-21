@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: false,
     },
     password: {
       type: String,
@@ -22,11 +22,16 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: false,
+      required: true,
     },
     village: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Village',
+      required: true,
+    },
+    cell: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Cell',
       required: true,
     },
   },
