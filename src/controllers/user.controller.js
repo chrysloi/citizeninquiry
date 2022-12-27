@@ -107,7 +107,10 @@ class users {
           error: 'Please provide all required fields',
         });
       }
-      const user = await User.findOne({ phone });
+      const user = await User.findOne({ phone }).populate({
+        path: 'cell village',
+        select: 'name name',
+      });
       if (!user) {
         return res.status(404).json({
           status: 404,
@@ -129,6 +132,7 @@ class users {
         data: { token, user },
       });
     } catch (error) {
+      console.error(error);
       return res.status(500).json({
         status: INTERNAL_SERVER_ERROR,
         error: error,

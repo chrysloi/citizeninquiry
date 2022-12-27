@@ -4,12 +4,15 @@ const { INTERNAL_SERVER_ERROR, OK, CREATED } = require('http-status');
 class inquiries {
   static async createInquiry(req, res) {
     try {
-      const { title, description, user, village } = req.body;
+      const { title, description, user, village, category, cell } =
+        req.body;
       const inquiry = await Inquiry.create({
         title,
         description,
         user,
         village,
+        cell,
+        category,
       });
       return res.status(CREATED).json({
         message: 'Inquiry created',
@@ -29,9 +32,19 @@ class inquiries {
       const { inquiryId, userId, villageId, cellId, categoryId } =
         req.query;
       if (inquiryId) {
-        const inquiry = await Inquiry.findById(inquiryId).populate(
-          'user',
-        );
+        const inquiry = await Inquiry.findById(inquiryId)
+          .populate({
+            path: 'user',
+            select: 'name cell village phone category',
+          })
+          .populate({
+            path: 'village',
+            select: 'name',
+          })
+          .populate({
+            path: 'cell',
+            select: 'name',
+          });
         return res.status(OK).json({
           message: 'Inquiry found',
           data: inquiry,
@@ -40,7 +53,19 @@ class inquiries {
       if (userId) {
         const inquiry = await Inquiry.find({
           user: userId,
-        }).populate('user');
+        })
+          .populate({
+            path: 'user',
+            select: 'name cell village phone category',
+          })
+          .populate({
+            path: 'village',
+            select: 'name',
+          })
+          .populate({
+            path: 'cell',
+            select: 'name',
+          });
         return res.status(OK).json({
           message: 'Inquiry found',
           data: inquiry,
@@ -49,19 +74,79 @@ class inquiries {
       if (cellId) {
         const inquiry = await Inquiry.find({
           cell: cellId,
-        }).populate('user');
+        })
+          .populate({
+            path: 'user',
+            select: 'name cell village phone category',
+          })
+          .populate({
+            path: 'village',
+            select: 'name',
+          })
+          .populate({
+            path: 'cell',
+            select: 'name',
+          });
+        return res.status(OK).json({
+          message: 'Inquiry found',
+          data: inquiry,
+        });
       }
       if (villageId) {
         const inquiry = await Inquiry.find({
           village: villageId,
-        }).populate('user');
+        })
+          .populate({
+            path: 'user',
+            select: 'name cell village phone category',
+          })
+          .populate({
+            path: 'village',
+            select: 'name',
+          })
+          .populate({
+            path: 'cell',
+            select: 'name',
+          });
+        return res.status(OK).json({
+          message: 'Inquiry found',
+          data: inquiry,
+        });
       }
       if (categoryId) {
         const inquiry = await Inquiry.find({
           category: categoryId,
-        }).populate('user');
+        })
+          .populate({
+            path: 'user',
+            select: 'name cell village phone category',
+          })
+          .populate({
+            path: 'village',
+            select: 'name',
+          })
+          .populate({
+            path: 'cell',
+            select: 'name',
+          });
+        return res.status(OK).json({
+          message: 'Inquiry found',
+          data: inquiry,
+        });
       }
-      const inquiries = await Inquiry.find().populate('user');
+      const inquiries = await Inquiry.find()
+        .populate({
+          path: 'user',
+          select: 'name cell village phone category',
+        })
+        .populate({
+          path: 'village',
+          select: 'name',
+        })
+        .populate({
+          path: 'cell',
+          select: 'name',
+        });
       return res.status(OK).json({
         message: 'Inquiries found',
         data: inquiries,

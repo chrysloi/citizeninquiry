@@ -13,8 +13,8 @@ const inquirySchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      default: 'pending',
-      enum: ['pending', 'resolved', 'rejected'],
+      default: 'Pending',
+      enum: ['Pending', 'Resolved', 'Rejected'],
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

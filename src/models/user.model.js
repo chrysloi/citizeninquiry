@@ -27,12 +27,12 @@ const userSchema = new mongoose.Schema(
     village: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Village',
-      required: true,
+      required: false,
     },
     cell: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Cell',
-      required: true,
+      required: false,
     },
   },
   {
