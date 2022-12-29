@@ -29,8 +29,15 @@ class inquiries {
 
   static async getInquiries(req, res) {
     try {
-      const { inquiryId, userId, villageId, cellId, categoryId } =
-        req.query;
+      const { inquiryId, categoryId, cellId, villageId } = req.query;
+      const { user: data } = req.userdata;
+      const {
+        _id: user,
+        cell: { _id: cell },
+        village: { _id: village },
+        role,
+      } = data;
+
       if (inquiryId) {
         const inquiry = await Inquiry.findById(inquiryId)
           .populate({
@@ -50,9 +57,9 @@ class inquiries {
           data: inquiry,
         });
       }
-      if (userId) {
+      if (user && role === 'user') {
         const inquiry = await Inquiry.find({
-          user: userId,
+          user: user,
         })
           .populate({
             path: 'user',
@@ -71,9 +78,9 @@ class inquiries {
           data: inquiry,
         });
       }
-      if (cellId) {
+      if (cell._id && role === 'cell') {
         const inquiry = await Inquiry.find({
-          cell: cellId,
+          cell: cell,
         })
           .populate({
             path: 'user',
@@ -92,9 +99,9 @@ class inquiries {
           data: inquiry,
         });
       }
-      if (villageId) {
+      if (village && role === 'village') {
         const inquiry = await Inquiry.find({
-          village: villageId,
+          village: village,
         })
           .populate({
             path: 'user',
