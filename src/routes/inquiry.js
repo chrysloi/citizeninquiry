@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const inquiry = require('../controllers/inquiry.controller');
-const { Authenticated } = require('../middleware/auth.middleware');
+const Authenticated = require('../middleware/auth.middleware');
 
 const router = Router();
 
