@@ -84,7 +84,9 @@ class users {
           data: user,
         });
       }
-      const users = await User.find();
+      const users = await User.find().select('-password').populate({
+        path: 'cell village',
+      });
       return res.status(200).json({
         status: 200,
         data: users,
@@ -142,7 +144,7 @@ class users {
 
   static async updateUser(req, res) {
     try {
-      const { userId } = req.params;
+      const { userId } = req.query;
       const user = await User.findByIdAndUpdate(userId, req.body, {
         new: true,
       });
