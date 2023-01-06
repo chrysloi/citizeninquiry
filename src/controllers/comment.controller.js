@@ -4,9 +4,10 @@ class comment {
   static async create(req, res) {
     try {
       const { inquiryId } = req.params;
+      const { user: data } = req.userdata;
       const comment = await Comment.create({
         inquiry: inquiryId,
-        user: req.body.user,
+        user: data._id,
         comment: req.body.comment,
       });
       return res.status(201).json({
