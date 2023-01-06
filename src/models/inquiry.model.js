@@ -16,6 +16,11 @@ const inquirySchema = new mongoose.Schema(
       default: 'Village',
       // enum: ['Pending', 'Resolved', 'Rejected'],
     },
+    support: {
+      type: Boolean,
+      require: false,
+      default: false,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
