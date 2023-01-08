@@ -7,6 +7,7 @@ const router = Router();
 router.get('/', Authenticated.isAuthenticated, inquiry.getInquiries);
 router.post('/', inquiry.createInquiry);
 router.patch('/:inquiryId', inquiry.updateInquiry);
+router.patch('/:inquiryId/resolve', inquiry.resolveInquiry);
 router.delete('/:inquiryId', inquiry.deleteInquiry);
 
 module.exports = router;
