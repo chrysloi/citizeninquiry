@@ -119,7 +119,7 @@ class users {
           error: 'User not found',
         });
       }
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, password);
       if (!isMatch) {
         return res.status(401).json({
           status: 401,
