@@ -14,7 +14,7 @@ class inquiries {
     try {
       const { title, description, user, village, category, cell } =
         req.body;
-      const inquiry = Inquiry.create({
+      const inquiry = await Inquiry.create({
         title,
         description,
         user,
@@ -37,7 +37,7 @@ class inquiries {
 
   static async getInquiries(req, res) {
     try {
-      const { inquiryid, categoryId, cellId, villageId } = req.query;
+      const { inquiryId, categoryId, cellId, villageId } = req.query;
       const { user: data } = req.userdata;
       const {
         _id: user,
@@ -46,8 +46,8 @@ class inquiries {
         role,
       } = data;
 
-      if (inquiryid) {
-        const inquiry = await Inquiry.findById(inquiryid)
+      if (inquiryId) {
+        const inquiry = await Inquiry.findById(inquiryId)
           .populate({
             path: 'user',
             select: 'name cell village phone category',
