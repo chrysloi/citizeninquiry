@@ -9,5 +9,10 @@ router.post('/', inquiry.createInquiry);
 router.patch('/:inquiryId', inquiry.updateInquiry);
 router.patch('/:inquiryId/resolve', inquiry.resolveInquiry);
 router.delete('/:inquiryId', inquiry.deleteInquiry);
+router.patch(
+  '/support/:inquiryId',
+  Authenticated.isAuthenticated,
+  inquiry.requestSupport,
+);
 
 module.exports = router;

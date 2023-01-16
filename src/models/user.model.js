@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: 'user',
-      enum: ['user', 'village', 'cell', 'admin'],
+      enum: ['user', 'village', 'cell', 'sector'],
     },
     phone: {
       type: String,

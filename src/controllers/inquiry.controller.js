@@ -59,6 +59,10 @@ class inquiries {
           .populate({
             path: 'cell',
             select: 'name',
+          })
+          .populate({
+            path: 'category',
+            select: 'name',
           });
         return res.status(OK).json({
           message: 'Inquiry found',
@@ -80,13 +84,17 @@ class inquiries {
           .populate({
             path: 'cell',
             select: 'name',
+          })
+          .populate({
+            path: 'category',
+            select: 'name',
           });
         return res.status(OK).json({
           message: 'Inquiry found',
           data: inquiry,
         });
       }
-      if (cell._id && role === 'cell') {
+      if (cell && role === 'cell') {
         const inquiry = await Inquiry.find({
           cell: cell,
         })
@@ -100,6 +108,10 @@ class inquiries {
           })
           .populate({
             path: 'cell',
+            select: 'name',
+          })
+          .populate({
+            path: 'category',
             select: 'name',
           });
         return res.status(OK).json({
@@ -122,6 +134,10 @@ class inquiries {
           .populate({
             path: 'cell',
             select: 'name',
+          })
+          .populate({
+            path: 'category',
+            select: 'name',
           });
         return res.status(OK).json({
           message: 'Inquiry found',
@@ -143,6 +159,10 @@ class inquiries {
           .populate({
             path: 'cell',
             select: 'name',
+          })
+          .populate({
+            path: 'category',
+            select: 'name',
           });
         return res.status(OK).json({
           message: 'Inquiry found',
@@ -160,6 +180,10 @@ class inquiries {
         })
         .populate({
           path: 'cell',
+          select: 'name',
+        })
+        .populate({
+          path: 'category',
           select: 'name',
         });
       return res.status(OK).json({
@@ -250,6 +274,50 @@ class inquiries {
       return res.status(CREATED).json({
         message: 'Inquiry resolved',
         data: 'Resolved',
+      });
+    } catch (err) {
+      return res.status(INTERNAL_SERVER_ERROR).json({
+        status: INTERNAL_SERVER_ERROR,
+        error: err,
+      });
+    }
+  }
+
+  static async requestSupport(req, res) {
+    try {
+      let updated;
+      const { inquiryId } = req.params;
+      const { user } = req.userdata;
+      const { role } = user;
+      const inquiry = await Inquiry.findById(inquiryId);
+      if (!inquiry) {
+        return res.status(404).json({
+          message: 'Inquiry not found',
+        });
+      }
+      if (role === 'village') {
+        updated = await Inquiry.findByIdAndUpdate(
+          inquiryId,
+          { status: 'cell', cellSupport: true },
+          { new: true },
+        );
+      }
+      if (role === 'cell') {
+        updated = await Inquiry.findByIdAndUpdate(
+          inquiryId,
+          {
+            status: 'sector',
+            cellSupport: false,
+            sectorSupport: true,
+          },
+          { new: true },
+        );
+      }
+      console.log(updated);
+
+      return res.status(CREATED).json({
+        message: 'Support requested',
+        data: updated,
       });
     } catch (err) {
       return res.status(INTERNAL_SERVER_ERROR).json({

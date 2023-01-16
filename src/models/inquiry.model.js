@@ -13,10 +13,15 @@ const inquirySchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      default: 'Village',
+      default: 'village',
       // enum: ['Pending', 'Resolved', 'Rejected'],
     },
-    support: {
+    cellSupport: {
+      type: Boolean,
+      require: false,
+      default: false,
+    },
+    sectorSupport: {
       type: Boolean,
       require: false,
       default: false,
