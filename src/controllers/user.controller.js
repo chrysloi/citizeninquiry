@@ -10,14 +10,7 @@ class users {
         req.body;
       let salt, hash;
 
-      if (
-        !name ||
-        !password ||
-        !email ||
-        !phone ||
-        !village ||
-        !cell
-      ) {
+      if (!name || !password || !phone || !village || !cell) {
         return res.status(400).json({
           status: 400,
           error: 'Please provide all required fields',

@@ -2,12 +2,10 @@ const Inquiry = require('../models/inquiry.model');
 const { INTERNAL_SERVER_ERROR, OK, CREATED } = require('http-status');
 const AfricasTalking = require('africastalking');
 const talking = require('../config/config');
-const africastalking = AfricasTalking({
-  apiKey:
-    'f39224a851798a61c2060a22c83d4c6cea24cd239755c8ebb4541738ab891579',
-  // 'e81e6a47e69a581902824204a8f7be4725ad3acbaf139f1682b053f6912b7295',
-  username: 'chrysloi',
-});
+const twilio = require('twilio');
+const accountSid = 'AC66a626a962b4ab161f5065bfd13c61de';
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = new twilio(accountSid, authToken);
 
 class inquiries {
   static async createInquiry(req, res) {
@@ -265,12 +263,15 @@ class inquiries {
         { status: 'Resolved' },
         { new: true },
       );
-      console.log(updated);
-      // const result = await africastalking.SMS.send({
-      //   to: '+250787039222',
-      //   message: inquiry.title,
-      //   from: 'Citizen',
-      // });
+      client.messages
+        .create({
+          body: 'Hello, your inquiry was approved',
+          from: '+17622425909',
+          to: '+250787039222',
+        })
+        .then((message) => console.log(message.sid))
+        .catch((err) => console.error(err));
+
       return res.status(CREATED).json({
         message: 'Inquiry resolved',
         data: 'Resolved',
@@ -286,6 +287,7 @@ class inquiries {
   static async requestSupport(req, res) {
     try {
       let updated;
+      let message;
       const { inquiryId } = req.params;
       const { user } = req.userdata;
       const { role } = user;
@@ -301,6 +303,7 @@ class inquiries {
           { status: 'cell', cellSupport: true },
           { new: true },
         );
+        message = 'Hello, your inquiry was moved to cell level.';
       }
       if (role === 'cell') {
         updated = await Inquiry.findByIdAndUpdate(
@@ -312,8 +315,16 @@ class inquiries {
           },
           { new: true },
         );
+        message = 'Hello, your inquiry was moved to sector level.';
       }
-      console.log(updated);
+      client.messages
+        .create({
+          body: message,
+          from: '+17622425909',
+          to: '+250787039222',
+        })
+        .then((message) => console.log(message.sid))
+        .catch((err) => console.error(err));
 
       return res.status(CREATED).json({
         message: 'Support requested',
