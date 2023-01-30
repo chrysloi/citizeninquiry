@@ -3,7 +3,7 @@ const { INTERNAL_SERVER_ERROR, OK, CREATED } = require('http-status');
 const AfricasTalking = require('africastalking');
 const talking = require('../config/config');
 const twilio = require('twilio');
-const accountSid = 'AC66a626a962b4ab161f5065bfd13c61de';
+const accountSid = 'AC9badef3b0e8336dc8bdd5351bc6da22a';
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = new twilio(accountSid, authToken);
 
@@ -265,9 +265,9 @@ class inquiries {
       );
       client.messages
         .create({
-          body: 'Hello, your inquiry was approved',
+          body: `Hello, your inquiry was resolved on ${inquiry.status} level`,
           from: '+17622425909',
-          to: '+250787039222',
+          to: '+250728578570',
         })
         .then((message) => console.log(message.sid))
         .catch((err) => console.error(err));
@@ -321,7 +321,7 @@ class inquiries {
         .create({
           body: message,
           from: '+17622425909',
-          to: '+250787039222',
+          to: '+250728578570',
         })
         .then((message) => console.log(message.sid))
         .catch((err) => console.error(err));
