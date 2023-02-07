@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec babel-node ./src/server",
-    "start": "babel src -d dist && node ./dist/server"
+    "start": "node ./dist/server",
+    "build": "babel src -d dist"
   },
   "repository": {
     "type": "git",
