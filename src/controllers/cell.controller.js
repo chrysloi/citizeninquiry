@@ -10,7 +10,7 @@ class cells {
         leader,
       });
       return res.status(CREATED).json({
-        message: 'Cell created',
+        message: 'Cell created successfully',
         data: cell,
       });
     } catch (error) {
